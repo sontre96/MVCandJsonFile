@@ -1,0 +1,36 @@
+[
+  {
+    "id": 1,
+    "proName": "Macbook",
+    "proDesc": "Air M1",
+    "price": 10000
+  },
+
+  {
+    "id": 2,
+    "proName": "Laptop",
+    "proDesc": "Dell",
+    "price": 8000
+  },
+
+  {
+    "id": 3,
+    "proName": "Laptop",
+    "proDesc": "Asus",
+    "price": 7500
+  },
+
+  {
+    "id": 4,
+    "proName": "Laptop",
+    "proDesc": "acer",
+    "price": 5500
+  },
+
+  {
+    "id": 5,
+    "proName": "PC desktop",
+    "proDesc": "Asus",
+    "price": 6500
+  }
+]

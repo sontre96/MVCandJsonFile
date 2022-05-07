@@ -9,12 +9,22 @@ import java.util.ArrayList;
 
 public class ProductDAOImpl implements ProductDAO {
 
+    private final Connection connection = SQLServerConnection.getSQLServerConnection();
+    private final String SQL_CREATE_PRODUCT = "insert into product(proName,proDesc,price) values(?,?,?) ";
+    private final String SQL_GET_PRODUCT_BY_ID = "select * from product where id = ? ";
+    private final String SQL_GET_PRODUCT_BY_NAME = "select * from product where proName = ? ";
+    private final String SQL_UPDATE_PRODUCT = "update product set proName =?, proDESC =?, price =? where id = ?";
+    private final String SQL_DELETE_PRODUCT = "delete from product where id = ?";
+
+    public ProductDAOImpl() throws SQLException, ClassNotFoundException {
+    }
+
     @Override
     public void createProduct(Product product) throws SQLException, ClassNotFoundException {
-        Connection connection = SQLServerConnection.getSQLServerConnection();
-        String query = "insert into product(proName,proDesc,price) values(?,?,?) ";
+//        Connection connection = SQLServerConnection.getSQLServerConnection();
+//        String query = "insert into product(proName,proDesc,price) values(?,?,?) ";
 
-        PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+        PreparedStatement preparedStatement = connection.prepareStatement(SQL_CREATE_PRODUCT, Statement.RETURN_GENERATED_KEYS);
         preparedStatement.setString(1, product.getProName());
         preparedStatement.setString(2, product.getProDesc());
         preparedStatement.setDouble(3, product.getPrice());
@@ -30,9 +40,9 @@ public class ProductDAOImpl implements ProductDAO {
     public Product getProductById(int id) throws SQLException, ClassNotFoundException {
         Product product = new Product();
 
-        Connection connection = SQLServerConnection.getSQLServerConnection();
-        String query = "select * from product where id = ? ";
-        PreparedStatement preparedStatement= connection.prepareStatement(query);
+//        Connection connection = SQLServerConnection.getSQLServerConnection();
+//        String query = "select * from product where id = ? ";
+        PreparedStatement preparedStatement= connection.prepareStatement(SQL_GET_PRODUCT_BY_ID);
         preparedStatement.setInt(1, id);
 
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -47,10 +57,10 @@ public class ProductDAOImpl implements ProductDAO {
 
     @Override
     public ArrayList<Product> getProductByName(String name) throws SQLException, ClassNotFoundException {
-        Connection connection = SQLServerConnection.getSQLServerConnection();
+//        Connection connection = SQLServerConnection.getSQLServerConnection();
         ArrayList<Product> productList = new ArrayList<>();
-        String query = "select * from product where proName = ? ";
-        PreparedStatement preparedStatement = connection.prepareStatement(query);
+//        String query = "select * from product where proName = ? ";
+        PreparedStatement preparedStatement = connection.prepareStatement(SQL_GET_PRODUCT_BY_NAME);
         preparedStatement.setString(1, name);
         ResultSet resultSet = preparedStatement.executeQuery();
         while (resultSet.next()) {
@@ -65,7 +75,7 @@ public class ProductDAOImpl implements ProductDAO {
 
     @Override
     public ArrayList<Product> getAllProduct() throws SQLException, ClassNotFoundException {
-        Connection connection = SQLServerConnection.getSQLServerConnection();
+//        Connection connection = SQLServerConnection.getSQLServerConnection();
 
         String query = "select * from product";
 
@@ -86,10 +96,10 @@ public class ProductDAOImpl implements ProductDAO {
 
     @Override
     public void updateProduct(Product product) throws SQLException, ClassNotFoundException {
-        Connection connection = SQLServerConnection.getSQLServerConnection();
+//        Connection connection = SQLServerConnection.getSQLServerConnection();
         //Search product by Id
-        String query = "update product set proName =?, proDESC =?, price =? where id = ?";
-        PreparedStatement preparedStatement = connection.prepareStatement(query);
+//        String query = "update product set proName =?, proDESC =?, price =? where id = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_PRODUCT);
         preparedStatement.setString(1, product.getProName());
         preparedStatement.setString(2, product.getProDesc());
         preparedStatement.setDouble(3, product.getPrice());
@@ -100,13 +110,11 @@ public class ProductDAOImpl implements ProductDAO {
 
     @Override
     public boolean deleteProduct(int id) throws SQLException, ClassNotFoundException {
-        Connection connection = SQLServerConnection.getSQLServerConnection();
-        String query = "delete from product where id = ?" ;
-        PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+//        Connection connection = SQLServerConnection.getSQLServerConnection();
+//        String query = "delete from product where id = ?" ;
+        PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_PRODUCT, Statement.RETURN_GENERATED_KEYS);
         preparedStatement.setInt(1, id);
         preparedStatement.executeUpdate();
         return true;
     }
-
-
 }

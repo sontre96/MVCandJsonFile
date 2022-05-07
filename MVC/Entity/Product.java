@@ -47,4 +47,8 @@ public class Product {
         this.price = price;
     }
 
+    @Override
+    public String toString() {
+        return "id: " + id + ", proName: " + proName + ", Description: " + proDesc + ", Price: " + price;
+    }
 }

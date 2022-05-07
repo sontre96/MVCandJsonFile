@@ -9,6 +9,9 @@ import java.util.ArrayList;
 public class ProductController {
     ProductDAOImpl productDAO = new ProductDAOImpl();
 
+    public ProductController() throws SQLException, ClassNotFoundException {
+    }
+
     public void createProductController(Product product) throws SQLException, ClassNotFoundException {
         productDAO.createProduct(product);
     }
@@ -37,5 +40,4 @@ public class ProductController {
         boolean result = productDAO.deleteProduct(id);
         return  result;
     }
-
 }

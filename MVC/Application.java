@@ -4,10 +4,11 @@ import jdbcapp.MVC.View.EmployeeConsole;
 import jdbcapp.MVC.View.LoginConsole;
 import jdbcapp.MVC.View.ProductConsole;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class Application {
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
+    public static void main(String[] args) throws SQLException, ClassNotFoundException, IOException {
 //        LoginConsole loginConsole = new LoginConsole();
 //        loginConsole.start();
 

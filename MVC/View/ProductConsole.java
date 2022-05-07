@@ -1,9 +1,19 @@
 package jdbcapp.MVC.View;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
 import jdbcapp.MVC.Controller.ProductController;
 import jdbcapp.MVC.DAO.SQLServerConnection;
 import jdbcapp.MVC.Entity.Product;
 
+import java.io.*;
+import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -15,7 +25,7 @@ public class ProductConsole {
 
     private final Scanner sc;
 
-    public ProductConsole() {
+    public ProductConsole() throws SQLException, ClassNotFoundException {
         this.sc = new Scanner(System.in);
     }
 
@@ -28,13 +38,13 @@ public class ProductConsole {
         System.out.println("4. Display all Product");
         System.out.println("5. Update a Product by Id");
         System.out.println("6. Delete a Product by Id");
-        System.out.println("7.");
-        System.out.println("8.");
+        System.out.println("7. Export product to Json file ");
+        System.out.println("8. Read JSon file");
         System.out.println("9. Exit!!!");
         System.out.println("Choose: ");
     }
 
-    public void showMenu() throws SQLException, ClassNotFoundException {
+    public void showMenu() throws SQLException, ClassNotFoundException, IOException {
         int choose;
 
         do {
@@ -62,8 +72,10 @@ public class ProductConsole {
                     deleteProduct();
                     break;
                 case 7:
+                    ExportToJsonFile();
                     break;
                 case 8:
+                    ReadFileJSon();
                     break;
                 case 9:
                     Connection connection = SQLServerConnection.getSQLServerConnection();
@@ -158,4 +170,31 @@ public class ProductConsole {
             System.out.println("Product not found!");
         }
     }
+
+    public void ExportToJsonFile() throws SQLException, ClassNotFoundException, IOException {
+        ArrayList<Product> products = productController.getAllProductController();
+        String fileName = "productSQL.json";
+        Path path = Paths.get(fileName);
+        Writer writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8);
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonElement tree = gson.toJsonTree(products);
+        gson.toJson(tree, writer);
+        writer.close();
+        System.out.println("The file was successfully written");
+    }
+
+    public void ReadFileJSon() throws SQLException, ClassNotFoundException {
+        ArrayList<Product> products;
+        try {
+            FileReader reader = new FileReader("productSQL.json");
+            Type objectType = new TypeToken<ArrayList<Product>>(){}.getType();
+            products = new Gson().fromJson(reader, objectType);
+            for (Product product :products) {
+                System.out.println(product);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
